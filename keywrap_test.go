@@ -3,8 +3,9 @@ package keywrap_test
 import (
 	"encoding/hex"
 	"fmt"
-	"keywrap/rfc3394"
 	"strings"
+
+	"github.com/gleroi/keywrap/rfc3394"
 )
 
 func Example_wrap() {

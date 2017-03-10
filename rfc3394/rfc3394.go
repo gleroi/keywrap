@@ -4,7 +4,8 @@ package rfc3394
 import (
 	"crypto/aes"
 	"errors"
-	"keywrap"
+
+	"github.com/gleroi/keywrap"
 )
 
 type rfc3394Wrapper struct {

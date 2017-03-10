@@ -2,10 +2,11 @@ package rfc3394_test
 
 import (
 	"encoding/hex"
-	"keywrap"
-	"keywrap/rfc3394"
 	"strings"
 	"testing"
+
+	"github.com/gleroi/keywrap"
+	"github.com/gleroi/keywrap/rfc3394"
 )
 
 func testWrap(t *testing.T, skek, skey, sexpected string) {
