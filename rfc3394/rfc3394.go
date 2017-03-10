@@ -1,3 +1,4 @@
+// Package rfc3394 provides the AES Key Wrap algorithm as described in RFC3394
 package rfc3394
 
 import (
@@ -70,5 +71,41 @@ func (w rfc3394Wrapper) Wrap(key []byte, text []byte) ([]byte, error) {
 }
 
 func (w rfc3394Wrapper) Unwrap(key []byte, text []byte) ([]byte, error) {
-	return nil, errors.New("Not implemented")
+	if len(text) < minTextSize+1 {
+		return nil, errors.New("text is too small, expecting at least 9 bytes")
+	}
+	if (len(text))%blockSize != 0 {
+		return nil, errors.New("text length must be a multiple of 8")
+	}
+	if len(key) < minKeySize {
+		return nil, errors.New("key is too small, expecting at least 128 bits")
+	}
+	var cypher, err = aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+
+	var n = len(text)/blockSize - 1
+	var A = make([]byte, blockSize)
+	copy(A, text[0:blockSize])
+	var R = make([]byte, n*blockSize)
+	copy(R, text[blockSize:])
+
+	var t = make([]byte, blockSize)
+	var ARi = make([]byte, blockSize*2)
+	var B = make([]byte, blockSize*2)
+	for j := 5; j >= 0; j-- {
+		for i := n - 1; i >= 0; i-- {
+			byteArray(t, uint64(n*j+i+1))
+			for k := 0; k < blockSize; k++ {
+				ARi[k] = A[k] ^ t[k]
+			}
+			var Ri = R[i*blockSize : (i+1)*blockSize]
+			copy(ARi[blockSize:], Ri)
+			cypher.Decrypt(B, ARi)
+			copy(A, B[0:blockSize])
+			copy(Ri, B[blockSize:])
+		}
+	}
+	return R, nil
 }

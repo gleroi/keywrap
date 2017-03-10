@@ -1,4 +1,4 @@
-// Package keywrap implements a set of algorithms to wrap/unwrap keywrap with an encryption key.
+// Package keywrap provides a set of algorithms to wrap/unwrap keywrap with an encryption key.
 //
 // Currently, the following algorithms are implemented:
 //  - RFC3394: AES Key Wrap Algorithm
