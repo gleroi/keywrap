@@ -72,7 +72,7 @@ func main() {
 
 	for _, input := range inputs {
 		var key = encoder.DecodeString(input)
-		cryptedKey, err := wrapper.Wrap(kek, key)
+		cryptedKey, err := wrapper.Unwrap(kek, key)
 		if err != nil {
 			fmt.Println("Could not encrypt key ", input, ": ", err)
 		}
